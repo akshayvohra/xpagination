@@ -35,16 +35,15 @@ const Pagination = () => {
     indexOfLastEmployee
   );
 
-  
   const handleNext = () => {
     if (currentPage < Math.ceil(employees.length / rowsPerPage)) {
-      setCurrentPage(currentPage + 1);
+      setTimeout(() => setCurrentPage((prevPage) => prevPage + 1), 10);
     }
   };
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setTimeout(() => setCurrentPage((prevPage) => prevPage - 1), 10);
     }
   };
 
@@ -81,11 +80,10 @@ const Pagination = () => {
         </table>
       )}
 
-      
       <div style={{ marginTop: '10px', textAlign: 'center' }}>
         <button
           onClick={handlePrevious}
-        //   disabled={currentPage === 1}
+          disabled={currentPage === 1}
           style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
         >
           Previous
@@ -93,7 +91,7 @@ const Pagination = () => {
         <span style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}> {currentPage}</span>
         <button
           onClick={handleNext}
-        //   disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
+          disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
           style={{ marginLeft: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
         >
           Next
@@ -102,8 +100,5 @@ const Pagination = () => {
     </div>
   );
 };
-
-
-
 
 export default Pagination;
