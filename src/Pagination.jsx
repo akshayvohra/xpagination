@@ -85,7 +85,7 @@ const Pagination = () => {
       <div style={{ marginTop: '10px', textAlign: 'center' }}>
         <button
           onClick={handlePrevious}
-        //   disabled={currentPage === 1}
+          disabled={currentPage === 1}
           style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
         >
           Previous
