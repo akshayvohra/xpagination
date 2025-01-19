@@ -93,7 +93,7 @@ const Pagination = () => {
         <span style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}> {currentPage}</span>
         <button
           onClick={handleNext}
-          disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
+        //   disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
           style={{ marginLeft: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
         >
           Next
