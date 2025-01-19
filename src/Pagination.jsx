@@ -1,60 +1,60 @@
 import React, { useState, useEffect } from 'react';
 
 const Pagination = () => {
-  const [employees, setEmployees] = useState([]); 
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [loading, setLoading] = useState(true); 
-  const rowsPerPage = 10; 
+  const [employees, setEmployees] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const rowsPerPage = 10;
 
-  // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
         );
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
         const data = await response.json();
         setEmployees(data);
         setLoading(false);
       } catch (error) {
-        alert('Failed to fetch data');
+        console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  // Calculate paginated data
-  const indexOfLastEmployee = currentPage * rowsPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
-  const currentEmployees = employees.slice(
-    indexOfFirstEmployee,
-    indexOfLastEmployee
-  );
+  useEffect(() => {
+    console.log('Current Page:', currentPage);
+  }, [currentPage]);
 
   const handleNext = () => {
     if (currentPage < Math.ceil(employees.length / rowsPerPage)) {
-      setTimeout(() => setCurrentPage((prevPage) => prevPage + 1), 10);
+      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setTimeout(() => setCurrentPage((prevPage) => prevPage - 1), 10);
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
+  const indexOfLastEmployee = currentPage * rowsPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
+  const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+
   return (
     <div>
-      <h1 style={{
-        textAlign:"center",
-        backgroundColor:"darkgreen",
-        padding:"10px",
-        borderRadius:"2px"
-      }}>Employee Data Table</h1>
+      <h1
+        style={{
+          textAlign: 'center',
+          backgroundColor: 'darkgreen',
+          padding: '10px',
+          borderRadius: '2px',
+        }}
+      >
+        Employee Data Table
+      </h1>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -84,15 +84,30 @@ const Pagination = () => {
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
+          style={{
+            marginRight: '10px',
+            backgroundColor: currentPage === 1 ? 'gray' : 'darkgreen',
+            color: 'white',
+            padding: '5px',
+            borderRadius: '5px',
+            border: '2px',
+          }}
         >
           Previous
         </button>
-        <span style={{ marginRight: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}> {currentPage}</span>
+        <span>{currentPage}</span>
         <button
           onClick={handleNext}
           disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
-          style={{ marginLeft: '10px', backgroundColor:"darkgreen", color:"white",padding:"5px", borderRadius:"5px", border:"2px" }}
+          style={{
+            marginLeft: '10px',
+            backgroundColor:
+              currentPage === Math.ceil(employees.length / rowsPerPage) ? 'gray' : 'darkgreen',
+            color: 'white',
+            padding: '5px',
+            borderRadius: '5px',
+            border: '2px',
+          }}
         >
           Next
         </button>
