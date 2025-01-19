@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Pagination = () => {
   const [employees, setEmployees] = useState([]);
@@ -6,51 +6,56 @@ const Pagination = () => {
   const [loading, setLoading] = useState(true);
   const rowsPerPage = 10;
 
+  // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
+          "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
         );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
         const data = await response.json();
         setEmployees(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        alert("Failed to fetch data");
         setLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('Current Page:', currentPage);
-  }, [currentPage]);
+  // Calculate paginated data
+  const indexOfLastEmployee = currentPage * rowsPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
+  const currentEmployees = employees.slice(
+    indexOfFirstEmployee,
+    indexOfLastEmployee
+  );
 
   const handleNext = () => {
     if (currentPage < Math.ceil(employees.length / rowsPerPage)) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentPage(currentPage - 1);
     }
   };
-
-  const indexOfLastEmployee = currentPage * rowsPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
-  const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
 
   return (
     <div>
       <h1
         style={{
-          textAlign: 'center',
-          backgroundColor: 'darkgreen',
-          padding: '10px',
-          borderRadius: '2px',
+          textAlign: "center",
+          backgroundColor: "darkgreen",
+          padding: "10px",
+          borderRadius: "2px",
+          color: "white",
         }}
       >
         Employee Data Table
@@ -58,7 +63,7 @@ const Pagination = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table border="1" style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
               <th>ID</th>
@@ -80,33 +85,51 @@ const Pagination = () => {
         </table>
       )}
 
-      <div style={{ marginTop: '10px', textAlign: 'center' }}>
+      <div style={{ marginTop: "10px", textAlign: "center" }}>
         <button
           onClick={handlePrevious}
-          disabled={currentPage === 1}
+          disabled={currentPage === 1} // Ensure "Previous" button is disabled on the first page
           style={{
-            marginRight: '10px',
-            backgroundColor: currentPage === 1 ? 'gray' : 'darkgreen',
-            color: 'white',
-            padding: '5px',
-            borderRadius: '5px',
-            border: '2px',
+            marginRight: "10px",
+            backgroundColor: currentPage === 1 ? "gray" : "darkgreen",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            border: "2px",
+            cursor: currentPage === 1 ? "not-allowed" : "pointer",
           }}
         >
           Previous
         </button>
-        <span>{currentPage}</span>
+        <span
+          style={{
+            marginRight: "10px",
+            backgroundColor: "darkgreen",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            border: "2px",
+          }}
+        >
+          {currentPage}
+        </span>
         <button
           onClick={handleNext}
-          disabled={currentPage === Math.ceil(employees.length / rowsPerPage)}
+          disabled={currentPage === Math.ceil(employees.length / rowsPerPage)} // Ensure "Next" button is disabled on the last page
           style={{
-            marginLeft: '10px',
+            marginLeft: "10px",
             backgroundColor:
-              currentPage === Math.ceil(employees.length / rowsPerPage) ? 'gray' : 'darkgreen',
-            color: 'white',
-            padding: '5px',
-            borderRadius: '5px',
-            border: '2px',
+              currentPage === Math.ceil(employees.length / rowsPerPage)
+                ? "gray"
+                : "darkgreen",
+            color: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            border: "2px",
+            cursor:
+              currentPage === Math.ceil(employees.length / rowsPerPage)
+                ? "not-allowed"
+                : "pointer",
           }}
         >
           Next
