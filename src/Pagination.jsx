@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Pagination = () => {
   const [employees, setEmployees] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const rowsPerPage = 10;
 
@@ -28,26 +28,23 @@ const Pagination = () => {
   }, []);
 
   // Calculate paginated data
-  const indexOfLastEmployee = currentPage * rowsPerPage;
+  const indexOfLastEmployee = page * rowsPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
   const currentEmployees = employees.slice(
     indexOfFirstEmployee,
     indexOfLastEmployee
   );
 
-  // Fix pagination logic to ensure accurate navigation
-  const hasNextPage = indexOfLastEmployee < employees.length;
-  const hasPreviousPage = currentPage > 1;
-
-  const handleNext = () => {
-    if (hasNextPage) {
-      setCurrentPage((prev) => prev + 1);
+  
+  const decrement = () => {
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
 
-  const handlePrevious = () => {
-    if (hasPreviousPage) {
-      setCurrentPage((prev) => prev - 1);
+  const increment = () => {
+    if (employees[(page + 1) * rowsPerPage]) {
+      setPage(page + 1);
     }
   };
 
@@ -91,15 +88,15 @@ const Pagination = () => {
 
       <div style={{ marginTop: "10px", textAlign: "center" }}>
         <button
-          onClick={handlePrevious}
+          onClick={decrement}
           style={{
             marginRight: "10px",
-            backgroundColor: hasPreviousPage ? "darkgreen" : "gray",
+            backgroundColor: "darkgreen",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
             border: "2px solid darkgreen",
-            cursor: hasPreviousPage ? "pointer" : "not-allowed",
+            cursor: page > 1 ? "pointer" : "not-allowed",
           }}
         >
           Previous
@@ -114,18 +111,18 @@ const Pagination = () => {
             border: "2px solid darkgreen",
           }}
         >
-          {currentPage}
+          {page}
         </span>
         <button
-          onClick={handleNext}
+          onClick={increment}
           style={{
             marginLeft: "10px",
-            backgroundColor: hasNextPage ? "darkgreen" : "gray",
+            backgroundColor: "darkgreen",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
             border: "2px solid darkgreen",
-            cursor: hasNextPage ? "pointer" : "not-allowed",
+            cursor: employees[(page + 1) * rowsPerPage] ? "pointer" : "not-allowed",
           }}
         >
           Next
