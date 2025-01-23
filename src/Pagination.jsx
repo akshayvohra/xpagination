@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Pagination = () => {
   const [employees, setEmployees] = useState([]);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const rowsPerPage = 10;
 
@@ -28,23 +28,22 @@ const Pagination = () => {
   }, []);
 
   // Calculate paginated data
-  const indexOfLastEmployee = page * rowsPerPage;
+  const indexOfLastEmployee = currentPage * rowsPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - rowsPerPage;
   const currentEmployees = employees.slice(
     indexOfFirstEmployee,
     indexOfLastEmployee
   );
 
-  
   const decrement = () => {
-    if (page > 1) {
-      setPage(page - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
   const increment = () => {
-    if (employees[(page + 1) * rowsPerPage]) {
-      setPage(page + 1);
+    if (employees[(currentPage + 1) * rowsPerPage]) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
@@ -95,8 +94,8 @@ const Pagination = () => {
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px solid darkgreen",
-            cursor: page > 1 ? "pointer" : "not-allowed",
+            border: "2px",
+            cursor: "pointer",
           }}
         >
           Previous
@@ -108,10 +107,10 @@ const Pagination = () => {
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px solid darkgreen",
+            border: "2px",
           }}
         >
-          {page}
+          {currentPage}
         </span>
         <button
           onClick={increment}
@@ -121,8 +120,8 @@ const Pagination = () => {
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px solid darkgreen",
-            cursor: employees[(page + 1) * rowsPerPage] ? "pointer" : "not-allowed",
+            border: "2px",
+            cursor: "pointer",
           }}
         >
           Next
