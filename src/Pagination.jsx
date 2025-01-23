@@ -35,16 +35,19 @@ const Pagination = () => {
     indexOfLastEmployee
   );
 
-  // Handle pagination logic
+  // Fix pagination logic to ensure accurate navigation
+  const hasNextPage = indexOfLastEmployee < employees.length;
+  const hasPreviousPage = currentPage > 1;
+
   const handleNext = () => {
-    if (employees.length > currentPage * rowsPerPage) {
-      setCurrentPage(currentPage + 1);
+    if (hasNextPage) {
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    if (hasPreviousPage) {
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
@@ -91,12 +94,12 @@ const Pagination = () => {
           onClick={handlePrevious}
           style={{
             marginRight: "10px",
-            backgroundColor: currentPage > 1 ? "darkgreen" : "gray",
+            backgroundColor: hasPreviousPage ? "darkgreen" : "gray",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px",
-            cursor: currentPage > 1 ? "pointer" : "not-allowed",
+            border: "2px solid darkgreen",
+            cursor: hasPreviousPage ? "pointer" : "not-allowed",
           }}
         >
           Previous
@@ -108,7 +111,7 @@ const Pagination = () => {
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px",
+            border: "2px solid darkgreen",
           }}
         >
           {currentPage}
@@ -117,13 +120,12 @@ const Pagination = () => {
           onClick={handleNext}
           style={{
             marginLeft: "10px",
-            backgroundColor:
-              employees.length > currentPage * rowsPerPage ? "darkgreen" : "gray",
+            backgroundColor: hasNextPage ? "darkgreen" : "gray",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
-            border: "2px",
-            cursor: employees.length > currentPage * rowsPerPage ? "pointer" : "not-allowed",
+            border: "2px solid darkgreen",
+            cursor: hasNextPage ? "pointer" : "not-allowed",
           }}
         >
           Next
@@ -134,4 +136,3 @@ const Pagination = () => {
 };
 
 export default Pagination;
-
