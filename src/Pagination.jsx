@@ -35,8 +35,9 @@ const Pagination = () => {
     indexOfLastEmployee
   );
 
+  // Handle pagination logic
   const handleNext = () => {
-    if (currentPage < Math.ceil(employees.length / rowsPerPage)) {
+    if (employees.length > currentPage * rowsPerPage) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -88,15 +89,14 @@ const Pagination = () => {
       <div style={{ marginTop: "10px", textAlign: "center" }}>
         <button
           onClick={handlePrevious}
-          disabled={currentPage === 1} // Ensure "Previous" button is disabled on the first page
           style={{
             marginRight: "10px",
-            backgroundColor: currentPage === 1 ? "gray" : "darkgreen",
+            backgroundColor: currentPage > 1 ? "darkgreen" : "gray",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
             border: "2px",
-            cursor: currentPage === 1 ? "not-allowed" : "pointer",
+            cursor: currentPage > 1 ? "pointer" : "not-allowed",
           }}
         >
           Previous
@@ -115,21 +115,15 @@ const Pagination = () => {
         </span>
         <button
           onClick={handleNext}
-          disabled={currentPage === Math.ceil(employees.length / rowsPerPage)} // Ensure "Next" button is disabled on the last page
           style={{
             marginLeft: "10px",
             backgroundColor:
-              currentPage === Math.ceil(employees.length / rowsPerPage)
-                ? "gray"
-                : "darkgreen",
+              employees.length > currentPage * rowsPerPage ? "darkgreen" : "gray",
             color: "white",
             padding: "5px",
             borderRadius: "5px",
             border: "2px",
-            cursor:
-              currentPage === Math.ceil(employees.length / rowsPerPage)
-                ? "not-allowed"
-                : "pointer",
+            cursor: employees.length > currentPage * rowsPerPage ? "pointer" : "not-allowed",
           }}
         >
           Next
@@ -140,3 +134,4 @@ const Pagination = () => {
 };
 
 export default Pagination;
+
